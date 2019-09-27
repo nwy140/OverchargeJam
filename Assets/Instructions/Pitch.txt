@@ -1,0 +1,31 @@
+﻿//Overcharge Jam
+
+
+Motto/Alternate Theme
+- Gaining Too Much Power
+- Uncontrollable
+    - When you have too much power, you become uncontrollable
+- THe more you get hit, get stronger you become
+- Don't gain too much power
+    - If you gain too much power, you will explode. or the world will explode
+- Undercharge
+    - Your power runs out really fast, you need to keep charging.
+- Charge the balloon
+    - Charge to float, if you charge too much, balloon will explode and you will fall back down.
+    - Your goal
+- 
+
+Game Project Routes
+- Top Down 3rd Person Sword Charging Game
+- Top Down Life Force draining vampire/electro game.
+- Top Down 
+
+
+Other Jam Games
+https://ldjam.com/events/ludum-dare/39/overcharged-1
+
+
+
+
+Jam Articles
+https://www.pcgamer.com/finnish-devs-attempt-extreme-game-jam/
