@@ -36,8 +36,8 @@ public class VisCharAnim : MonoBehaviour
         myAnim.SetBool(CnvAnimTags.GROUND_BOOL,externalGD.isGrounded);
     }
 
-    public void Walk(bool walk){
-        myAnim.SetBool(CnvAnimTags.WALK,walk);
+    public void Walk(float walk){
+        myAnim.SetFloat(CnvAnimTags.WALK,walk);
         
     }
     public void Attack1(){
@@ -53,6 +53,12 @@ public class VisCharAnim : MonoBehaviour
     public void Jump(){
          myAnim.SetTrigger(CnvAnimTags.JUMP_TRIGGER);
     }
+
+    public void isGroundFalling(bool isGrounded){
+        myAnim.SetBool(CnvAnimTags.GROUND_BOOL, isGrounded);
+    }
+
+
 
     // ENEMY ANIMATIONS
     public void EnemyAttack(int attack){

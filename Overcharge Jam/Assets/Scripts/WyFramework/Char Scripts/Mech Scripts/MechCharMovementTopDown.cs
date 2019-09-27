@@ -51,6 +51,7 @@ public class MechCharMovementTopDown : MonoBehaviour
     // CustComponents in Child
     //public var _child_CustComp
     public MechActorGroundDetector child_cust_mechActorGroundDetector;
+    public VisCharAnim child_cust_visCharAnim;
 
     // Components in External
     //public var _ex_Comp
@@ -71,6 +72,8 @@ public class MechCharMovementTopDown : MonoBehaviour
         myRB = GetComponent<Rigidbody>();
         child_Animator = GetComponentInChildren<Animator>();
         child_cust_mechActorGroundDetector = GetComponentInChildren<MechActorGroundDetector>();
+        child_cust_visCharAnim = GetComponentInChildren<VisCharAnim>();
+
         horizontalSpeed *= horiSpeedMultiplier;
         verticalSpeed *= verticalSpeedMultiplier;
 
@@ -96,6 +99,9 @@ public class MechCharMovementTopDown : MonoBehaviour
         }
 
 
+        //Animator params // called in VisCharAnim
+        child_cust_visCharAnim.Walk(myRB.velocity.magnitude);
+        child_cust_visCharAnim.isGroundFalling(child_cust_mechActorGroundDetector.isGrounded);
     }
 
     public void MoveRight(float AxisValue)
