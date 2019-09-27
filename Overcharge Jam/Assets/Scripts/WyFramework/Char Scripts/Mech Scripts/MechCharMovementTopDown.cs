@@ -19,7 +19,7 @@ public class MechCharMovementTopDown : MonoBehaviour
 {
 
     public Vector3 idleForce;
-    public float forwardSpeedMultiplier = 1; // multiplier for forward movement force
+    public float verticalSpeedMultiplier = 1; // multiplier for forward movement force
     public float horiSpeedMultiplier = 1; // multiplier for right movement force
 
 
@@ -50,6 +50,7 @@ public class MechCharMovementTopDown : MonoBehaviour
 
     // CustComponents in Child
     //public var _child_CustComp
+    public MechActorGroundDetector child_cust_mechActorGroundDetector;
 
     // Components in External
     //public var _ex_Comp
@@ -69,8 +70,11 @@ public class MechCharMovementTopDown : MonoBehaviour
     {
         myRB = GetComponent<Rigidbody>();
         child_Animator = GetComponentInChildren<Animator>();
+        child_cust_mechActorGroundDetector = GetComponentInChildren<MechActorGroundDetector>();
         horizontalSpeed *= horiSpeedMultiplier;
-        verticalSpeed *= forwardSpeedMultiplier;
+        verticalSpeed *= verticalSpeedMultiplier;
+
+
 
     }
 
@@ -82,14 +86,16 @@ public class MechCharMovementTopDown : MonoBehaviour
 
         MoveRight(Input.GetAxis("Horizontal"));
 
-        //MoveUp(Input.GetAxis("Fire1"));
-        //MoveUp(-Input.GetAxis("Fire2"));
+
+        meshRotation();
+        MoveUp(Input.GetAxis("Fire1"));
+        MoveUp(-Input.GetAxis("Fire2"));
+
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            Jump();
+        }
 
 
-
-        // if no movement button vert or hori press, decelerate and slowdown speed
-        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
-            DecelerateOnIdle();
     }
 
     public void MoveRight(float AxisValue)
@@ -97,42 +103,43 @@ public class MechCharMovementTopDown : MonoBehaviour
         Vector3 direction = transform.right * (horizontalSpeed * AxisValue);
         myRB.AddForce(direction);
 
-        if (AxisValue > 0.1 || AxisValue < -0.1)
-        {
-            Vector3 meshDirection = direction - transform.position;
-            Quaternion toRotation = Quaternion.FromToRotation(transform.forward, direction);
-            child_Animator.transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, 0.3f * Time.time);
-        }
-
     }
     public void MoveForward(float AxisValue)
     {
         Vector3 direction = transform.forward * (horizontalSpeed * AxisValue);
 
         myRB.AddForce(transform.forward * (horizontalSpeed * AxisValue));
-        if (AxisValue > 0.1 || AxisValue < -0.1)
-        {
-            Vector3 meshDirection = direction - transform.position;
-            Quaternion toRotation = Quaternion.FromToRotation(transform.forward, direction);
-
-
-            toRotation =
-            child_Animator.transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, 0.3f * Time.time);
-
-            child_Animator.transform.rotation = Quaternion.Euler(child_Animator.transform.rotation.eulerAngles.x,  child_Animator.transform.rotation.eulerAngles.z, Camera.main.transform.eulerAngles.y);
-        }
 
     }
+
+    public void Jump()
+    {
+        if (child_cust_mechActorGroundDetector.isGrounded) {
+            myRB.AddForce(new Vector3(0, verticalSpeed, 0), ForceMode.Impulse);
+        }
+    }
+
+    public void meshRotation()
+    {
+        float moveHorizontal = Input.GetAxisRaw("Horizontal");
+        float moveVertical = Input.GetAxisRaw("Vertical");
+           if(moveHorizontal>0.1|| moveHorizontal<-0.1 ||moveVertical>0.1 || moveVertical < -0.1){
+            Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+            child_Animator.transform.rotation = Quaternion.LookRotation(movement);
+
+
+            child_Animator.transform.Translate(movement * 0.1f * Time.deltaTime, Space.World);
+        }
+    }
+
+    //Move U/Downp Like A Helicopter
     public void MoveUp(float AxisValue)
     {
+
         myRB.AddForce(transform.up * (verticalSpeed * AxisValue));
     }
 
-    public void DecelerateOnIdle()
-    {
-        myRB.velocity = Vector3.zero;
 
-    }
 
 
 
